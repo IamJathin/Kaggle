@@ -1,0 +1,50 @@
+---
+title: "Untitled"
+author: "Jathin"
+date: "3 February 2019"
+output: html_document
+---
+```{r}
+library(ca)
+library(igraph)
+library(haven)
+library(MASS)
+library(glmnet)
+library(splines)
+library(class)
+library(pROC)
+library(rpart)
+library(rpart.plot)
+library(randomForest)
+library(igraph)
+library(ggdendro)
+library(dendextend)
+library(ISLR)
+library(tidyverse)
+library(ggbiplot)
+```
+
+```{r}
+heart_disease <- read.csv("C:/Users/jathi/Desktop/heart.csv", stringsAsFactors = FALSE) 
+colnames(heart_disease)
+```
+
+```{r}
+heart_disease$target <- as.factor(heart_disease$target)
+heart_disease_scaled <- 
+  heart_disease %>% 
+  select(-target) %>% 
+  scale() %>% 
+  as_tibble()
+pca_mod <- prcomp(heart_disease_scaled)
+summary(pca_mod)
+ggbiplot(pca_mod,ellipse=TRUE, labels=rownames(heart_disease))
+
+as_tibble(pca_mod$x) %>% 
+  ggplot(aes(x = PC1, y = PC2, colour = heart_disease$target)) +
+  geom_point() +
+  theme_minimal() +
+  scale_colour_viridis_d()
+
+```
+
